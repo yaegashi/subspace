@@ -24,5 +24,6 @@ bindata.go: $(BINDATA)
 	@echo "+++ bindata.go created"
 
 $(BINDATA):
-	go install github.com/kevinburke/go-bindata/v4/...@latest
+	# Clear GOOS and GOARCH to build go-bindata for the current platform
+	GOOS= GOARCH= go install github.com/kevinburke/go-bindata/v4/...@latest
 
