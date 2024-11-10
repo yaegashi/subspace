@@ -23,6 +23,7 @@ import (
 
 var (
 	ErrProfileNotFound  = errors.New("profile not found")
+	ErrProfileCapacity  = errors.New("profile number capacity reached")
 	ErrUserNotFound     = errors.New("user not found")
 	ErrUserDeleteFailed = errors.New("delete failed because user has devices")
 )
@@ -208,17 +209,32 @@ func (c *Config) UpdateProfile(id string, fn func(*Profile) error) error {
 	return c.save()
 }
 
+// Preliminary implementation
+// We should make it configurable using environment variables
+const minNumber = 2
+const maxNumber = 254
+
 func (c *Config) AddProfile(userID, name, platform string) (Profile, error) {
 	c.Lock()
 	defer c.Unlock()
 
 	id := RandomString(16)
 
-	number := 2 // MUST start at 2
+	// Collect all existing numbers
+	existingNumbers := make(map[int]bool)
 	for _, p := range c.Profiles {
-		if p.Number >= number {
-			number = p.Number + 1
+		existingNumbers[p.Number] = true
+	}
+	// Find the smallest number not in existingNumbers
+	number := minNumber
+	for {
+		if number > maxNumber {
+			return Profile{}, ErrProfileCapacity
 		}
+		if !existingNumbers[number] {
+			break
+		}
+		number++
 	}
 	profile := Profile{
 		ID:       id,
