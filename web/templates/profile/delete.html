@@ -1,6 +1,21 @@
 {{template "header.html" .}}
 
 <div class="ui container">
+    {{with $error := $.Request.FormValue "error"}}
+        <div class="ui large negative message">
+            <div class="content">
+                <div class="header">
+                    {{if eq $error "deleteprofile"}}
+                        Deleting device failed
+                    {{else}}
+                        {{$error}}
+                    {{end}}
+                </div>
+                <a class="close-link" href="/"><i class="close icon"></i></a>
+            </div>
+        </div>
+        <div class="ui hidden divider"></div>
+    {{end}}
     <div class="ui center aligned one column grid">
         <div class="column centered-column">
             <div class="ui padded segment">

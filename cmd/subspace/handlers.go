@@ -577,10 +577,10 @@ func profileDeleteHandler(w *Web) {
 	}
 	if err := deleteProfile(profile); err != nil {
 		logger.Errorf("delete profile failed: %s", err)
-		w.Redirect("/profile/delete?error=deleteprofile")
+		w.Redirect("/profile/delete/%s?error=deleteprofile", profile.ID)
 		return
 	}
-	if w.Admin {
+	if w.Admin && profile.UserID != "" {
 		w.Redirect("/user/edit/%s?success=deleteprofile", profile.UserID)
 		return
 	}
