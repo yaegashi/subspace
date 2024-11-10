@@ -60,6 +60,8 @@ type Web struct {
 
 	SemanticTheme string
 	TempTotpKey   *otp.Key
+
+	ProfileCount int
 }
 
 func init() {

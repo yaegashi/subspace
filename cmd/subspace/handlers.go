@@ -594,6 +594,7 @@ func indexHandler(w *Web) {
 	if w.Admin {
 		w.Profiles = config.ListProfilesByUser("")
 		w.Users = config.ListUsers()
+		w.ProfileCount = len(config.ListProfiles())
 	} else {
 		w.Profiles = config.ListProfilesByUser(w.User.ID)
 	}

@@ -264,6 +264,15 @@
         </div>
     {{end}}
 
+    {{if $.Admin}}
+        <div class="ui large info message">
+            <div class="header">
+                Number of device profiles: {{$.ProfileCount}}
+            </div>
+            <a class="close-link" href="/"><i class="close icon"></i></a>
+        </div>
+    {{end}}
+
 </div>
 
 {{template "footer.html" .}}
